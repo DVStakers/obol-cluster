@@ -47,6 +47,7 @@ generate_node_service() {
       --network="\${NETWORK}"
       --validator-keys="/opt/charon/validator_keys:/opt/charon/validator_keys"
       --validators-graffiti="\${GRAFFITI}"
+      --validators-proposer-blinded-blocks-enabled=${BUILDER_API_ENABLED:-false}
       --validators-proposer-config="http://node-${NODE_NUMBER}:3600/teku_proposer_config"
     depends_on: [node-${NODE_NUMBER}]
     volumes:
