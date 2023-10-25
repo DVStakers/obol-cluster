@@ -32,7 +32,7 @@ generate_node_service() {
       - \${CHARON_${NODE_NUMBER}_P2P_TCP_ADDRESS_PORT}:\${CHARON_${NODE_NUMBER}_P2P_TCP_ADDRESS_PORT}/tcp
 
   vc-${NODE_NUMBER}:
-    image: consensys/teku:\${TEKU_VERSION:-23.5.0}
+    image: consensys/teku:\${TEKU_VERSION:-23.10.0}
     networks: [cluster]
     restart: unless-stopped
     command: |
@@ -73,7 +73,7 @@ cat <<-'EOF' > $DOCKER_COMPOSE_FILE
 version: "3.8"
 
 x-node-base: &node-base
-  image: obolnetwork/charon:${CHARON_VERSION:-v0.17.0}
+  image: obolnetwork/charon:${CHARON_VERSION:-v0.17.1}
   restart: unless-stopped
   networks: [cluster]
   depends_on: [relay]
@@ -120,14 +120,14 @@ done
 
 cat <<-'EOF' >> $DOCKER_COMPOSE_FILE
   prometheus:
-    image: prom/prometheus:${PROMETHEUS_VERSION:-v2.41.0}
+    image: prom/prometheus:${PROMETHEUS_VERSION:-v2.44.0}
     volumes:
       - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     networks: [cluster]
     restart: unless-stopped
 
   grafana:
-    image: grafana/grafana:${GRAFANA_VERSION:-9.3.2}
+    image: grafana/grafana:${GRAFANA_VERSION:-9.5.3}
     depends_on: [prometheus]
     volumes:
       - ./monitoring/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
@@ -140,12 +140,12 @@ cat <<-'EOF' >> $DOCKER_COMPOSE_FILE
       - "${MONITORING_PORT_GRAFANA}:3000"
 
   node-exporter:
-    image: prom/node-exporter:${NODE_EXPORTER_VERSION:-v1.5.0}
+    image: prom/node-exporter:${NODE_EXPORTER_VERSION:-v1.6.0}
     networks: [cluster]
     restart: unless-stopped
 
   jaeger:
-    image: jaegertracing/all-in-one:${JAEGAR_VERSION:-1.41.0}
+    image: jaegertracing/all-in-one:${JAEGAR_VERSION:-1.46.0}
     networks: [cluster]
     restart: unless-stopped
 
