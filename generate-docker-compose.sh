@@ -166,6 +166,16 @@ for NODE_NUMBER in "${NODES[@]}"; do
   generate_prometheus_config $NODE_NUMBER >> $PROMETHEUS_CONFIG_FILE
 done
 
+# Check if PROMETHEUS_CREDENTIALS is set and then append the remote_write section
+if [[ -n $PROMETHEUS_CREDENTIALS && -n $PROMETHEUS_REMOTE_WRITE_URL ]]; then
+  cat <<-EOF >> $PROMETHEUS_CONFIG_FILE
+  remote_write:
+    - url: $PROMETHEUS_REMOTE_WRITE_URL
+      authorization:
+        credentials: $PROMETHEUS_CREDENTIALS
+EOF
+fi
+
 # Write the remaining static part of the Prometheus config file
 cat <<-'EOF' >> $PROMETHEUS_CONFIG_FILE
   - job_name: "node-exporter"
