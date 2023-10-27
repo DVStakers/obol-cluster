@@ -162,16 +162,6 @@ global:
 scrape_configs:
 EOF
 
-# Check if PROMETHEUS_CREDENTIALS and PROMETHEUS_REMOTE_WRITE_URL are set and then append the remote_write section
-if [[ -n $PROMETHEUS_CREDENTIALS && -n $PROMETHEUS_REMOTE_WRITE_URL ]]; then
-  cat <<-EOF >> $PROMETHEUS_CONFIG_FILE
-  remote_write:
-    - url: $PROMETHEUS_REMOTE_WRITE_URL
-      authorization:
-        credentials: $PROMETHEUS_CREDENTIALS
-EOF
-fi
-
 # Generate the dynamic Prometheus config
 for NODE_NUMBER in "${NODES[@]}"; do
   generate_prometheus_config $NODE_NUMBER >> $PROMETHEUS_CONFIG_FILE
@@ -184,5 +174,14 @@ cat <<-'EOF' >> $PROMETHEUS_CONFIG_FILE
       - targets: ["node-exporter:9100"]
 EOF
 
-echo "Success! The docker-compose.yml and monitoring/prometheus/prometheus.yml files have been generated."
+# Check if PROMETHEUS_CREDENTIALS and PROMETHEUS_REMOTE_WRITE_URL are set and then append the remote_write section
+if [[ -n $PROMETHEUS_CREDENTIALS && -n $PROMETHEUS_REMOTE_WRITE_URL ]]; then
+  cat <<-EOF >> $PROMETHEUS_CONFIG_FILE
+remote_write:
+  - url: $PROMETHEUS_REMOTE_WRITE_URL
+    authorization:
+      credentials: $PROMETHEUS_CREDENTIALS
+EOF
+fi
 
+echo "Success! The docker-compose.yml and monitoring/prometheus/prometheus.yml files have been generated."
