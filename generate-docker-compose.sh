@@ -73,7 +73,7 @@ cat <<-'EOF' > $DOCKER_COMPOSE_FILE
 version: "3.8"
 
 x-node-base: &node-base
-  image: obolnetwork/charon:${CHARON_VERSION:-v0.17.1}
+  image: obolnetwork/charon:${CHARON_VERSION:-v0.18.0}
   restart: unless-stopped
   networks: [cluster]
   depends_on: [relay]
