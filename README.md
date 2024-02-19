@@ -1,3 +1,10 @@
+# Repository Archived
+
+> :warning: **Warning:** This repository is no longer supported or maintained.
+>
+> Please use the [Obol repository](https://github.com/ObolNetwork/charon-distributed-validator-node) for ongoing support and updates.
+
+
 # Obol Cluster
 
 This repository contains the code to run any number of [Obol](https://obol.tech/) nodes on a single machine.
